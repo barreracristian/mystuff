@@ -1,0 +1,18 @@
+<ion-view view-title="#{{tagName}}">
+  <ion-content>
+
+    <ul class="grilla">
+      <li class="cosa {{ (($index+1)%4) == 0 ? 'cosafinal':''}}" ng-repeat="cosa in cosas" ng-click="toggle(cosa)">
+        <img src="{{cosa.foto}}" />
+        <div class="icono" ng-if="contiene(cosa.tags, tagName)"></div>
+        <div class="sobre" ng-if="contiene(cosa.tags, tagName)"></div>
+      </li>
+    </ul>
+
+    <div ng-if="!cosas || cosas.length == 0" class="empty positive">
+      <i class="ion-social-dropbox"></i>
+      <span>No existen cosas aún</span>
+    </div>
+
+  </ion-content>
+</ion-view>

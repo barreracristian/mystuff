@@ -1,0 +1,14 @@
+<ion-view view-title="Tags">
+  <ion-content>
+
+    <div class="list">
+      <ion-checkbox ng-repeat="tagplus in data.checks | orderBy : 'name'"
+                    ng-model="tagplus.checked"
+                    ng-checked="tagplus.checked"
+                    ng-change="checkboxChange(tagplus)">
+        # {{tagplus.name}} ({{tagplus.count}})
+      </ion-checkbox>
+    </div>
+
+  </ion-content>
+</ion-view>

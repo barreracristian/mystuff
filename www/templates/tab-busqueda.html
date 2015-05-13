@@ -1,0 +1,23 @@
+<ion-view view-title="Busqueda">
+  <ion-content>
+
+    <div class="list list-inset busqueda">
+      <label class="item item-input assertive-border assertive">
+        <i class="icon ion-search placeholder-icon assertive"></i>
+        <input type="text" ng-model="data.busqueda" placeholder="Busqueda">
+      </label>
+    </div>
+
+    <ul class="grilla">
+      <li class="cosa {{ (($index+1)%4) == 0 ? 'cosafinal':''}}" ng-repeat="cosa in (filteredCosas = cosas | filter : filtraCosas)">
+        <a href="#/tab/busqueda/{{data.busqueda}}/{{cosa._id}}"><img src="{{cosa.foto}}" /></a>
+      </li>
+    </ul>
+
+    <div ng-if="(cosas | filter : filtraCosas).length == 0" class="empty positive">
+      <i class="ion-social-dropbox"></i>
+      <span>La busqueda no ha arrojado resultados</span>
+    </div>
+
+  </ion-content>
+</ion-view>

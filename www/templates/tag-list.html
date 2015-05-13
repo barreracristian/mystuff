@@ -1,0 +1,21 @@
+<ion-view view-title="#{{tagName}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-trash-b assertive"
+                ng-if="cosas.length == 0" ng-click="removeTag(tagName)"></button>
+    </ion-nav-buttons>
+
+    <ion-content>
+
+    <ul class="grilla">
+      <li class="cosa {{ (($index+1)%4) == 0 ? 'cosafinal':''}}" ng-repeat="cosa in cosas">
+        <a href="#/tab/tags/{{tagName}}/{{cosa._id}}"><img src="{{cosa.foto}}" /></a>
+      </li>
+    </ul>
+
+    <div ng-if="cosas.length == 0" class="empty positive">
+      <i class="ion-social-dropbox"></i>
+      <span>No existen cosas con este tag</span>
+    </div>
+
+    </ion-content>
+</ion-view>

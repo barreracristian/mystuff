@@ -1,0 +1,25 @@
+<ion-view view-title="{{caja.name}}">
+  <ion-nav-buttons side="right">
+      <button class="button button-icon icon ion-trash-b assertive"
+              ng-if="caja.cosas.length == 0 && !caja.special" ng-click="removeCaja(caja)"></button>
+      <button class="button button-icon icon ion-camera assertive"
+            ng-if="!caja.special" ng-click="import()"></button>
+      <!--button class="button button-icon icon ion-plus assertive"
+              ng-if="!caja.special" ng-click="addCosa()"></button-->
+  </ion-nav-buttons>
+  <ion-content>
+
+    <ul class="grilla">
+      <li class="cosa {{ (($index+1)%4) == 0 ? 'cosafinal':''}}" ng-repeat="cosa in caja.cosas">
+        <a href="#/tab/cajas/{{caja._id}}/{{cosa._id}}"><img src="{{cosa.foto}}" /></a>
+      </li>
+    </ul>
+
+    <!-- cosas = {{caja.cosas.length}} -->
+    <div ng-if="caja.cosas.length == 0" class="empty positive">
+      <i class="ion-social-dropbox"></i>
+      <span>No existen cosas en esta caja</span>
+    </div>
+
+  </ion-content>
+</ion-view>

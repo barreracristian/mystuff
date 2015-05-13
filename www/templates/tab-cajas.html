@@ -1,0 +1,29 @@
+<ion-view view-title="Cajas">
+  <ion-nav-buttons side="right">
+    <!--button class="button button-icon icon ion-nuclear assertive" ng-click="deleteDB()"></button-->
+    <button class="button button-icon icon ion-plus assertive" ng-click="add()"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+        <!--cajas {{cajas.length}}-->
+        <ion-item ng-repeat="caja in cajas | orderBy: cajasCustomOrder"
+                  ng-if="!caja.special || (caja.special && caja.cosas.length > 0)"
+                class="item-remove-animate item-icon-right caja positive"
+                type="item-text-wrap"
+                href="#/tab/cajas/{{caja._id}}">
+            <i ng-if="!caja.special" class="icon ion-ios-box icon-main"></i>
+            <i ng-if="caja.special == 'fav' " class="icon ion-ios-heart icon-main icon-special"></i>
+            <i ng-if="caja.special == 'del' " class="icon ion-trash-b icon-main icon-special"></i>
+            <h2 style="margin-left:50px;">{{caja.name}}</h2>
+            <p style="margin-left:50px;">{{caja.cosas.length}} cosas</p>
+            <i class="icon ion-chevron-right icon-accessory"></i>
+        </ion-item>
+    </ion-list>
+
+    <div ng-if="cajas.length == 0 || (cajas[0].cosas.length == 0 && cajas[1].cosas.length == 0 && cajas.length <= 2)" class="empty positive">
+      <i class="ion-social-dropbox"></i>
+      <span>No existen cajas creadas</span>
+    </div>
+
+  </ion-content>
+</ion-view>

@@ -1,0 +1,184 @@
+/* general */
+
+/* #A2836A header A2836A*/
+/* #F3EDE2 fondo F3EDE2*/
+/* #FA5A5A seleccionado FA5A5A */
+/* #40728C accion 40728C*/
+/* #40728D cajas 40728D*/
+
+.assertive{
+    color: #FA5A5A !important;
+}
+.assertive-border{
+    border-color: #FA5A5A !important;
+    border-width: 3px;
+}
+.header-item{
+    color:#444 !important;
+}
+
+.positive{
+    color: #40728D !important;
+}
+
+.stable-bg{
+    background-color: #F8F8F8 !important;
+}
+
+a {
+    color: #444;
+    text-decoration:none;
+}
+
+a.soft {
+    color:#666 !important;
+}
+
+
+
+
+
+
+
+
+
+.card{
+    margin-top:0;
+}
+
+a b{
+    font-weight:normal;
+    font-style:normal;
+}
+
+a small{
+    font-weight:normal;
+    font-style:normal;
+    color:#666;
+}
+
+
+
+/* --------------------- caja --------------------- */
+
+.caja .icon-main{
+    font-size:50px;
+    position:absolute;
+    left:15px;
+}
+
+/* --------------------- grilla --------------------- */
+
+.grilla {
+    padding:0;
+    margin:0;
+    list-style:none;
+    font-size:0;
+    line-height:0;
+}
+
+.grilla .cosa{
+    display:inline-block;
+    width:25.1vw;
+    height:25.1vw;
+    margin:0 !important;
+    padding-top:0.5vw;
+    padding-right:0.4vw;
+}
+
+.grilla .cosa.cosafinal{
+    width:24.7vw;
+    padding-right:0vw;
+}
+
+.grilla .cosa img{
+    position:relative;
+    width:100%;
+    height:100%;
+    z-index:6;
+}
+
+.grilla .cosa .icono{
+    position:absolute;
+    width:5vw;
+    height:5vw;
+    margin-top:-7vw;
+    margin-left:18vw;
+
+    border:0.5vw solid #FFF;
+    border-radius:2.5vw;
+    background-color:#FA5A5A;
+    z-index:10;
+}
+
+.grilla .cosa .sobre{
+    position:absolute;
+    width:24.7vw;
+    height:24.7vw;
+    margin-top:-24.7vw;
+    background-color:#FFF;
+    opacity:0.5;
+    z-index:8;
+}
+
+/* --------------------- cosa grande --------------------- */
+
+.cosa .button-icon{
+    position:absolute;
+    right:0.5rem;
+    top:0.5rem;
+}
+
+.cosa img{
+    width:100vw;
+    height:100vw;
+}
+
+.cosa .click{
+    width:47vw;
+    height:100vw;
+    margin-top:-100vw;
+    opacity:0.5;
+}
+.cosa .click.left{
+    float:left;
+}
+.cosa .click.right{
+    float:right;
+}
+
+.cosa .tabs-secondary a{
+    opacity:1 !important;
+}
+
+.tag{
+    font-size:0.9rem;
+    font-weight:400;
+    margin-right:0.3rem;
+}
+
+.busqueda{
+    margin-top:1rem;
+    margin-bottom:1rem;
+    background-color:#F3EDE2;
+}
+
+.fav{
+    background-color: red !important;
+}
+
+.empty{
+    margin-top: 10vw;
+    margin-bottom: 10vw;
+    text-align:center;
+    font-weight: bold;
+}
+.empty i{
+    font-size:20vw
+}
+.empty span{
+    display:block;
+}
+
+
+

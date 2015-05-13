@@ -1,0 +1,21 @@
+<ion-view view-title="Tags">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon icon ion-plus assertive" ng-click="add()"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-icon-right" style="padding-right:0;"
+                ng-repeat="tag in tags | orderBy : 'name'">
+        <a href="#/tab/tags/{{tag.name}}"><b class="royal">#</b> {{tag.name}} <small>({{tag.count}})</small></a>
+        <i class="icon ion-pricetag assertive" ng-click="bulkTags(tag)"></i>
+
+      </ion-item>
+    </ion-list>
+
+    <div ng-if="!tags || tags.length == 0" class="empty positive">
+      <i class="ion-social-dropbox"></i>
+      <span>No existen tags creados</span>
+    </div>
+
+  </ion-content>
+</ion-view>

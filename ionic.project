@@ -1,0 +1,12 @@
+{
+  "name": "organizeit-app",
+  "app_id": "746256ce",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}

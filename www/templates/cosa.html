@@ -1,0 +1,47 @@
+<ion-view view-title="{{cosa == undefined ? 'vacia' : '' + (voyen+1) + ' de ' + container.cosas.length + ''}}">
+  <ion-content class="padding" scroll="false">
+
+      <div ng-if="cosa" class="list card cosa"
+           on-swipe-left="cardSwipedLeft()"
+           on-swipe-right="cardSwipedRight()">
+
+        <div class="item padding stable-bg">
+          <h2>Caja: {{cosa.caja.name}}</h2>
+          <span class="tag" ng-repeat="tag in cosa.tags | orderBy : tag.name">
+            <a href="#/tab/tags/{{tag.name}}" class="soft"><b>#</b>{{tag.name}}</a>
+          </span>
+          <span ng-if="cosa.tags.length == 0">&nbsp;</span>
+          <a href="#/tab/{{contexto}}/{{cosa._id}}/detail/tags">
+          <button class="button button-icon icon ion-pricetag assertive"></button>
+          </a>
+        </div>
+
+        <div class="item item-image">
+          <img src="{{cosa.foto}}">
+          <div class="click left" ng-click="cardSwipedRight()"></div>
+          <div class="click right" ng-click="cardSwipedLeft()"></div>
+        </div>
+
+        <div class="item tabs tabs-icon-left stable-bg" style="border-color:#CFCFCF">
+          <a class="tab-item" href="#" ng-click="erase(cosa)">
+            <i class="icon ion-trash-b assertive"></i>
+          </a>
+          <a class="tab-item" href="#" ng-click="favourite()">
+            <i class="icon ion-ios-heart {{cosa.fav ? 'royal' : 'assertive'}}"></i>
+          </a>
+          <a class="tab-item" href="#" ng-click="move(cosa)">
+            <i class="icon ion-ios-redo assertive"></i>
+          </a>
+        </div>
+
+      </div>
+
+
+      <div ng-if="!cosa" class="card">
+        <div class="item item-text-wrap" style="text-align:center">
+          Ya no quedan cosas
+        </div>
+      </div>
+
+  </ion-content>
+</ion-view>
