@@ -188,14 +188,9 @@ angular.module('mystuff.services', [])
                 return mycajas;
             },
             allCosas: function () {
-                var ret = [];
-                for(var i=0; i<mycajas.length; ++i){
-                    if(mycajas[i].special) continue;
-                    for(var j=0; j<mycajas[i].cosas.length; ++j){
-                        Util.safePush(ret, mycajas[i].cosas[j]);
-                    }
-                }
-                return ret;
+                return Util.getMany(mycajas, function(cosa){
+                    return true;
+                });
             },
             allTags: function () {
                 return mytags;
@@ -204,26 +199,14 @@ angular.module('mystuff.services', [])
                 return _.find(mycajas, {_id: cajaId});
             },
             getCosa: function (cosaId) {
-                for(var i=0; i<mycajas.length; ++i){
-                    for(var j=0; j<mycajas[i].cosas.length; ++j){
-                        if(mycajas[i].cosas[j]._id == cosaId){
-                            return mycajas[i].cosas[j];
-                        }
-                    }
-                }
-                return undefined;
+                return Util.getOne(mycajas, function(cosa){
+                   return cosa._id == cosaId;
+                });
             },
             getCosas: function (busqueda, exact) {
-                var ret = [];
-                for(var i=0; i<mycajas.length; ++i){
-                    if(mycajas[i].special) continue;
-                    for(var j=0; j<mycajas[i].cosas.length; ++j){
-                        if(this.matches(mycajas[i].cosas[j], busqueda, exact)){
-                            Util.safePush(ret, mycajas[i].cosas[j]);
-                        }
-                    }
-                }
-                return ret;
+                return Util.getMany(mycajas, function(cosa){
+                    return this.matches(cosa, busqueda, exact);
+                });
             },
             getFavourite: function () {
                 return this.getCaja('0');
@@ -500,6 +483,29 @@ angular.module('mystuff.services', [])
             },
             j: function (json) {
                 return JSON.stringify(json);
+            },
+            getOne: function(cajas, matchfunction, includeSpecial){
+                for(var i=0; i<cajas.length; ++i){
+                    if(!includeSpecial && cajas[i].special) continue;
+                    for(var j=0; j<cajas[i].cosas.length; ++j){
+                        if(matchfunction(cajas[i].cosas[j])){
+                            return cajas[i].cosas[j];
+                        }
+                    }
+                }
+                return undefined;
+            },
+            getMany: function(cajas, matchfunction){
+                var ret = [];
+                for(var i=0; i<cajas.length; ++i){
+                    if(cajas[i].special) continue;
+                    for(var j=0; j<cajas[i].cosas.length; ++j){
+                        if(matchfunction(cajas[i].cosas[j])){
+                            Util.safePush(ret, cajas[i].cosas[j]);
+                        }
+                    }
+                }
+                return ret;
             }
         };
     })
