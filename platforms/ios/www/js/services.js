@@ -88,6 +88,22 @@ angular.module('mystuff.services', [])
             return arr;
         }
 
+        function refreshTags(){
+            var newTags = getTags();
+            var bigger = newTags.length >= mytags.length ? newTags : mytags;
+            var smaller = newTags.length < mytags.length ? newTags : mytags;
+
+            for (var i = 0; i < bigger.length; ++i) {
+                var tagBigger = bigger[i];
+                var tagSmaller = _.find(smaller, {name: tagBigger.name});
+                if (tagSmaller) {
+                    tagSmaller.count = tagBigger.count;
+                } else {
+                    smaller.push(tagBigger);
+                }
+            }
+        }
+
         init();
 
         var scope = $rootScope.$new();
@@ -155,20 +171,7 @@ angular.module('mystuff.services', [])
                     }
                 }
 
-                //tags
-                var newTags = getTags();
-                var bigger = newTags.length >= mytags.length ? newTags : mytags;
-                var smaller = newTags.length < mytags.length ? newTags : mytags;
-
-                for (var i = 0; i < bigger.length; ++i) {
-                    var tagBigger = bigger[i];
-                    var tagSmaller = _.find(smaller, {name: tagBigger.name});
-                    if (tagSmaller) {
-                        tagSmaller.count = tagBigger.count;
-                    } else {
-                        smaller.push(tagBigger);
-                    }
-                }
+                refreshTags();
             });
         });
 
@@ -180,6 +183,7 @@ angular.module('mystuff.services', [])
                         Util.removeFrom(caja.cosas, {_id: id});
                     }
                 });
+                refreshTags();
             });
         });
 
@@ -188,14 +192,11 @@ angular.module('mystuff.services', [])
                 return mycajas;
             },
             allCosas: function () {
-                var ret = [];
-                for(var i=0; i<mycajas.length; ++i){
-                    if(mycajas[i].special) continue;
-                    for(var j=0; j<mycajas[i].cosas.length; ++j){
-                        Util.safePush(ret, mycajas[i].cosas[j]);
-                    }
-                }
-                return ret;
+                var many = Util.getMany(mycajas, function (cosa) {
+                    return true;
+                });
+                console.log("----------------- many = " + JSON.stringify(many));
+                return many;
             },
             allTags: function () {
                 return mytags;
@@ -204,26 +205,15 @@ angular.module('mystuff.services', [])
                 return _.find(mycajas, {_id: cajaId});
             },
             getCosa: function (cosaId) {
-                for(var i=0; i<mycajas.length; ++i){
-                    for(var j=0; j<mycajas[i].cosas.length; ++j){
-                        if(mycajas[i].cosas[j]._id == cosaId){
-                            return mycajas[i].cosas[j];
-                        }
-                    }
-                }
-                return undefined;
+                return Util.getOne(mycajas, function(cosa){
+                   return cosa._id == cosaId;
+                });
             },
             getCosas: function (busqueda, exact) {
-                var ret = [];
-                for(var i=0; i<mycajas.length; ++i){
-                    if(mycajas[i].special) continue;
-                    for(var j=0; j<mycajas[i].cosas.length; ++j){
-                        if(this.matches(mycajas[i].cosas[j], busqueda, exact)){
-                            Util.safePush(ret, mycajas[i].cosas[j]);
-                        }
-                    }
-                }
-                return ret;
+                var thiz = this;
+                return Util.getMany(mycajas, function(cosa){
+                    return thiz.matches(cosa, busqueda, exact);
+                });
             },
             getFavourite: function () {
                 return this.getCaja('0');
@@ -294,10 +284,10 @@ angular.module('mystuff.services', [])
                 var found = _.find(cosa.tags, {name: tagName});
                 if (found) {
                     Util.removeFrom(cosa.tags, 'name', tagName);
-                    //_.find(mytags, {name: tagName}).count--;
+                    _.find(mytags, {name: tagName}).count--;
                 } else {
                     cosa.tags.push({name: tagName});
-                    //_.find(mytags, {name: tagName}).count++;
+                    _.find(mytags, {name: tagName}).count++;
                 }
                 DB.upsertCosa(cosa);
             },
@@ -500,6 +490,29 @@ angular.module('mystuff.services', [])
             },
             j: function (json) {
                 return JSON.stringify(json);
+            },
+            getOne: function(cajas, matchfunction, includeSpecial){
+                for(var i=0; i<cajas.length; ++i){
+                    if(!includeSpecial && cajas[i].special) continue;
+                    for(var j=0; j<cajas[i].cosas.length; ++j){
+                        if(matchfunction(cajas[i].cosas[j])){
+                            return cajas[i].cosas[j];
+                        }
+                    }
+                }
+                return undefined;
+            },
+            getMany: function(cajas, matchfunction){
+                var ret = [];
+                for(var i=0; i<cajas.length; ++i){
+                    if(cajas[i].special) continue;
+                    for(var j=0; j<cajas[i].cosas.length; ++j){
+                        if(matchfunction(cajas[i].cosas[j])){
+                            this.safePush(ret, cajas[i].cosas[j]);
+                        }
+                    }
+                }
+                return ret;
             }
         };
     })

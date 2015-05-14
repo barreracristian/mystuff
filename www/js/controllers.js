@@ -138,8 +138,8 @@ angular.module('mystuff.controllers', ['ionic', 'ngCordova'])
                 inputPlaceholder: ''
             }).then(
                 function (name) {
-                    name = Util.replaceAll(' ', '', name).toLowerCase();
                     if (name && name.trim().length > 0) {
+                        name = Util.replaceAll(' ', '', name).toLowerCase();
                         Main.addTag(name.trim());
                     }
                 },
