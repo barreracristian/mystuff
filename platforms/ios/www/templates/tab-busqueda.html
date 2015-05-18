@@ -10,7 +10,7 @@
 
     <ul class="grilla">
       <li class="cosa {{ (($index+1)%4) == 0 ? 'cosafinal':''}}" ng-repeat="cosa in (filteredCosas = cosas | filter : filtraCosas)">
-        <a href="#/tab/busqueda/{{data.busqueda}}/{{cosa._id}}"><img src="{{cosa.foto}}" /></a>
+        <a href="#/tab/busqueda/{{data.busqueda}}/{{cosa._id}}"><img src="{{Util.getFotoBasePath()}}{{cosa.foto}}" /></a>
       </li>
     </ul>
 

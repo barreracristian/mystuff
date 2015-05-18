@@ -3,7 +3,7 @@
 
     <ul class="grilla">
       <li class="cosa {{ (($index+1)%4) == 0 ? 'cosafinal':''}}" ng-repeat="cosa in cosas" ng-click="toggle(cosa)">
-        <img src="{{cosa.foto}}" />
+        <img src="{{Util.getFotoBasePath()}}{{cosa.foto}}" />
         <div class="icono" ng-if="contiene(cosa.tags, tagName)"></div>
         <div class="sobre" ng-if="contiene(cosa.tags, tagName)"></div>
       </li>

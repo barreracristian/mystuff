@@ -14,7 +14,7 @@
         </div>
 
         <div class="item item-image">
-          <img src="{{cosa.foto}}">
+          <img src="{{Util.getFotoBasePath()}}{{cosa.foto}}">
           <div class="click left" ng-click="cardSwipedRight()"></div>
           <div class="click right" ng-click="cardSwipedLeft()"></div>
         </div>

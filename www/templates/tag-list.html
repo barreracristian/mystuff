@@ -8,7 +8,7 @@
 
     <ul class="grilla">
       <li class="cosa {{ (($index+1)%4) == 0 ? 'cosafinal':''}}" ng-repeat="cosa in cosas">
-        <a href="#/tab/tags/{{tagName}}/{{cosa._id}}"><img src="{{cosa.foto}}" /></a>
+        <a href="#/tab/tags/{{tagName}}/{{cosa._id}}"><img src="{{Util.getFotoBasePath()}}{{cosa.foto}}" /></a>
       </li>
     </ul>
 

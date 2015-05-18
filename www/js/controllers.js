@@ -33,25 +33,43 @@ angular.module('mystuff.controllers', ['ionic', 'ngCordova'])
             }
         };
 
-        $scope.deleteDB = function(){
+        $scope.deleteDB = function () {
             DB.deleteDB();
         }
 
     })
 
     .controller('CajaCtrl', function ($q, $state, $scope, $timeout, $stateParams, $cordovaFile, $cordovaImagePicker, Main, Util) {
+        $scope.Util = Util;
         $scope.caja = Main.getCaja($stateParams.cajaId);
+        //checkFiles();
 
         var options = {
             maximumImagesCount: 33,
-            width: 300,
-            height: 300,
+            width: 500,
+            height: 500,
             quality: 80
         };
+
+        //$scope.debug = cordova.file.dataDirectory;
 
         //debug
         $scope.addCosa = function () {
             Main.addCosa($scope.caja, "./img/IPH_001.JPG");
+        };
+
+        //debug
+        var checkFiles = function () {
+            for (var i = 0; i < $scope.caja.cosas.length; ++i) {
+                var cosa = $scope.caja.cosas[i];
+                $cordovaFile.checkFile(cordova.file.dataDirectory, cosa.foto)
+                    .then(function (success) {
+                        console.log("check sucess = " + JSON.stringify(success));
+                    }, function (error) {
+                        console.log("check error = " + JSON.stringify(error));
+                        // error
+                    });
+            }
         };
 
         $scope.removeCaja = function (caja) {
@@ -69,8 +87,8 @@ angular.module('mystuff.controllers', ['ionic', 'ngCordova'])
                             console.log("fileEntry.name = " + fileEntry.name);
                             var p = moveFile(fileEntry.nativeURL.replace(fileEntry.name, ''), fileEntry.name);
                             promises.push(p);
-                            p.then(function (nativeURL) {
-                                Main.addCosa($scope.caja, nativeURL);
+                            p.then(function (fileName) {
+                                Main.addCosa($scope.caja, fileName);
                             });
                         }, function (error) {
                             console.log('getPictures err = ' + JSON.stringify(error));
@@ -101,7 +119,8 @@ angular.module('mystuff.controllers', ['ionic', 'ngCordova'])
             $cordovaFile.moveFile(fromPath, fromFilename, destDir, destFileName)
                 .then(function (newFile) {
                     console.log("moveFile OK " + JSON.stringify(newFile));
-                    moveFileP.resolve(newFile.nativeURL);
+                    moveFileP.resolve(newFile.name);
+                    //moveFileP.resolve(newFile.nativeURL);
                 }, function (err) {
                     console.log("moveFile FAILED " + fromFilename + " error: " + JSON.stringify(err));
                     moveFileP.reject(err);
@@ -114,13 +133,18 @@ angular.module('mystuff.controllers', ['ionic', 'ngCordova'])
 
 //
 
-    .controller('BusquedaCtrl', function ($scope, Main) {
+    .controller('BusquedaCtrl', function ($scope, Main, Util) {
+        $scope.Util = Util;
         $scope.cosas = Main.allCosas();
 
         $scope.data = {};
+        $scope.data.busqueda = '*';
+
         $scope.filtraCosas = function (cosa) {
             if ($scope.data.busqueda) {
                 return Main.matches(cosa, $scope.data.busqueda);
+            } else {
+                return false;
             }
         };
     })
@@ -154,7 +178,8 @@ angular.module('mystuff.controllers', ['ionic', 'ngCordova'])
         }
     })
 
-    .controller('TagBulkCtrl', function ($scope, $stateParams, $ionicPopup, Main) {
+    .controller('TagBulkCtrl', function ($scope, $stateParams, $ionicPopup, Main, Util) {
+        $scope.Util = Util;
         $scope.tagName = $stateParams.tag;
         $scope.cosas = Main.allCosas();
         console.log("TagBulkCtrl " + JSON.stringify($scope.cosas));
@@ -164,12 +189,13 @@ angular.module('mystuff.controllers', ['ionic', 'ngCordova'])
             Main.toggleTag(cosa, $scope.tagName);
         };
 
-        $scope.contiene = function(tags, name){
+        $scope.contiene = function (tags, name) {
             return _.find(tags, {name: name});
         };
     })
 
-    .controller('TagListCtrl', function ($scope, $state, $stateParams, Main) {
+    .controller('TagListCtrl', function ($scope, $state, $stateParams, Main, Util) {
+        $scope.Util = Util;
         $scope.tagName = $stateParams.tag;
         $scope.cosas = Main.getCosas($scope.tagName, true);
 
@@ -182,6 +208,8 @@ angular.module('mystuff.controllers', ['ionic', 'ngCordova'])
 //
 
     .controller('CosaCtrl', function ($timeout, $scope, $stateParams, $location, $ionicPopup, $ionicActionSheet, Main, Util) {
+        $scope.Util = Util;
+
         //url: '/cajas/     :cajaId/    :cosaId'
         //url: '/busqueda/  :busqueda/  :cosaId'
         //url: '/tags/      :tag/       :cosaId'

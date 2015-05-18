@@ -195,7 +195,6 @@ angular.module('mystuff.services', [])
                 var many = Util.getMany(mycajas, function (cosa) {
                     return true;
                 });
-                console.log("----------------- many = " + JSON.stringify(many));
                 return many;
             },
             allTags: function () {
@@ -229,7 +228,7 @@ angular.module('mystuff.services', [])
                         }
                     } else {
                         //Es un simil de stratsWith
-                        if (cosa.tags[i].name.toLowerCase().indexOf(busqueda.toLowerCase()) == 0) {
+                        if (busqueda == '*' || cosa.tags[i].name.toLowerCase().indexOf(busqueda.toLowerCase()) == 0) {
                             return true;
                         }
                     }
@@ -244,10 +243,10 @@ angular.module('mystuff.services', [])
                 };
                 DB.upsertCaja(newCaja);
             },
-            addCosa: function (caja, filePath) {
+            addCosa: function (caja, fileName) {
                 var nuevaCosa = {
                     _id: (++maxCosaId) + '',
-                    foto: filePath,
+                    foto: fileName,
                     tags: [],
                     caja: {_id: caja._id, name: caja.name}
                 };
@@ -451,7 +450,7 @@ angular.module('mystuff.services', [])
         };
     })
 
-    .factory('Util', function () {
+    .factory('Util', function ($cordovaFile) {
         return {
             replaceAll: function (find, replace, str) {
                 return str.replace(new RegExp(find, 'g'), replace);
@@ -513,6 +512,9 @@ angular.module('mystuff.services', [])
                     }
                 }
                 return ret;
+            },
+            getFotoBasePath: function(){
+                return cordova.file.dataDirectory;
             }
         };
     })
